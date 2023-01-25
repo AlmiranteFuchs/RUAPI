@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 // Routes
 import home from './routes/home';
+import { RestaurantLink, Scrapper } from './src/scrapper/scrapper';
 
 dotenv.config();
 
@@ -15,3 +16,5 @@ app.use('/', home);
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
+
+Scrapper.get(RestaurantLink.Politecnico);
