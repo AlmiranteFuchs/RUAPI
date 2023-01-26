@@ -22,6 +22,8 @@ export enum Alergeno {
     "Peixe" = "peixe",
     "Amendoim" = "amendoim",
     "Soja" = "soja",
-    "Leite" = "leite",
+    "Lactose" = "lactose",
     "Pimenta" = "pimenta",
+    "Origem animal" = "origem_animal",
+    "Outros" = "outros"
 }

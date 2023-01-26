@@ -14,9 +14,12 @@ const port: number = Number(process.env.PORT) || 3000;
 app.use('/', home);
 app.use('/cardapios', cardapios);
 
+//404
+app.use((req: Request, res: Response) => {
+    res.status(404).send('404 - Not Found');
+});
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
-
-Scrapper.get(RestaurantLink.Politecnico);

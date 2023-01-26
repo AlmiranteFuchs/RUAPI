@@ -1,7 +1,7 @@
 import { Refeicao, TipoRefeicao } from "../model/refeicao";
 import axios from "axios";
 import cherio from "cheerio";
-import { Alimento } from "../model/alimento";
+import { Alergeno, Alimento } from "../model/alimento";
 import { Cardapio } from "../model/cardapio";
 
 // I suck balls at scraping. if you see this, implement interfaces for object building and work on this scraping.
@@ -89,9 +89,41 @@ export class Scrapper {
 
             text_array?.forEach(el => {
                 // if the text is not empty
-                if (text != "") {
+                if (text != "") {                    
+                    let name = $(el).text().trim(); // get the text of the element
+                    const a = $(el).find("a");      // get the a tag of the element
+                    const href = a.attr("href");    // get the href of the a tag
+
+                    let alergicos =[];
+                    let vegano = false;
+
+                    // compare the href with the allergens
+                    switch (href) {
+                        case "https://pra.ufpr.br/ru/files/2022/01/Gluten-site.png":
+                            alergicos.push(Alergeno.Glúten);
+                            break;
+                        case "https://pra.ufpr.br/ru/files/2022/02/Simbolo-vegano.jpg":
+                            vegano = true;
+                            break;
+                        case "https://pra.ufpr.br/ru/files/2022/01/Origem-animal-site.png":
+                            alergicos.push(Alergeno["Origem animal"]);
+                            break;
+                        case "https://pra.ufpr.br/ru/files/2022/01/Alergenicos-site.png":
+                            alergicos.push(Alergeno.Outros);
+                            break;
+                        case "https://pra.ufpr.br/ru/files/2022/01/Leite-e-derivados-site.png":
+                            alergicos.push(Alergeno.Lactose);
+                            break;
+                        case "https://pra.ufpr.br/ru/files/2022/02/Simbolo-pimenta-300x300.png":
+                            alergicos.push(Alergeno.Pimenta);
+                            break;
+                        case "https://pra.ufpr.br/ru/files/2022/01/Ovo-site.jpg":
+                            alergicos.push(Alergeno.Ovos);
+                            break;
+                    }
+
                     // Create a new Alimento
-                    const alimento = new Alimento($(el).text().trim(), [], false);     // TODO: Add the allergens and if it is vegetarian
+                    const alimento = new Alimento(name, alergicos, vegano);     // TODO: Add the allergens and if it is vegetarian
                     alimentos.push(alimento);
                 }
             });
