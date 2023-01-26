@@ -80,6 +80,7 @@ export class Scrapper {
 
         // foreach element on the td
         element.each((index, elements) => {
+            
             // get the text of the element
             //const text = $(elements).text();
 
@@ -89,42 +90,53 @@ export class Scrapper {
 
             text_array?.forEach(el => {
                 // if the text is not empty
+
+                
+
                 if (text != "") {                    
                     let name = $(el).text().trim(); // get the text of the element
+
                     const a = $(el).find("a");      // get the a tag of the element
-                    const href = a.attr("href");    // get the href of the a tag
+                    
+                    let href = a.attr("href"); // get the href of the a tag
 
                     let alergicos =[];
-                    let vegano = false;
+                    let vegano = true;
 
-                    // compare the href with the allergens
-                    switch (href) {
-                        case "https://pra.ufpr.br/ru/files/2022/01/Gluten-site.png":
+                    if(href != undefined){
+
+                        href = href.toString().toLowerCase().trim();
+                        
+                        // compare the href with the allergens
+                        if(href.includes("gluten")){
                             alergicos.push(Alergeno.Glúten);
-                            break;
-                        case "https://pra.ufpr.br/ru/files/2022/02/Simbolo-vegano.jpg":
+                        }
+                        if(href.includes("vegano")){
                             vegano = true;
-                            break;
-                        case "https://pra.ufpr.br/ru/files/2022/01/Origem-animal-site.png":
+                        }
+                        if(href.includes("origem-animal")){
                             alergicos.push(Alergeno["Origem animal"]);
-                            break;
-                        case "https://pra.ufpr.br/ru/files/2022/01/Alergenicos-site.png":
+                            vegano = false;
+                        }
+                        if(href.includes("alergenicos")){
                             alergicos.push(Alergeno.Outros);
-                            break;
-                        case "https://pra.ufpr.br/ru/files/2022/01/Leite-e-derivados-site.png":
+                        }
+                        if(href.includes("leite")){
                             alergicos.push(Alergeno.Lactose);
-                            break;
-                        case "https://pra.ufpr.br/ru/files/2022/02/Simbolo-pimenta-300x300.png":
+                        }
+                        if(href.includes("pimenta")){
                             alergicos.push(Alergeno.Pimenta);
-                            break;
-                        case "https://pra.ufpr.br/ru/files/2022/01/Ovo-site.jpg":
+                        }
+                        if(href.includes("ovo")){
                             alergicos.push(Alergeno.Ovos);
-                            break;
-                    }
+                        }
 
+    
+                    }
                     // Create a new Alimento
                     const alimento = new Alimento(name, alergicos, vegano);     // TODO: Add the allergens and if it is vegetarian
                     alimentos.push(alimento);
+                
                 }
             });
         });

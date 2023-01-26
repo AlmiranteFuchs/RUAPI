@@ -21,5 +21,5 @@ app.use((req: Request, res: Response) => {
 
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`RU API listening at http://localhost:${port}`);
 });
